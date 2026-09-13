@@ -2,17 +2,19 @@
 
 A compact learning project for a CS student preparing for capital-markets internships.
 
-**Current status: scaffolding only. No quantitative features are implemented.**
+**Current status: Day 1 application skeleton and educational notebook. No production quantitative features are implemented.**
 
 ## What exists
 
 - Next.js, React, TypeScript, and Tailwind setup.
 - Exactly four placeholder pages: Overview, Option Chain, Pricing Lab, Volatility.
-- FastAPI application wiring and a `/health` endpoint.
-- Empty analytics and market-data packages, a schema placeholder, and a health smoke test.
+- FastAPI `/health` endpoint, checked by the Next.js server and displayed in Overview.
+- Empty pricing, volatility, and market-data packages, API wiring, and a health smoke test.
+- An educational option-basics notebook with worked examples and assertions.
 - Dependency manifests and a day-by-day learning plan.
 
-There are no calculations, market/demo data, charts, feature endpoints, or feature tests.
+There are no production calculations, market/demo data, charts, or analytics endpoints.
+Payoff and profit experiments exist only in the research notebook.
 Plotly and TanStack dependencies are reserved for later lessons. NumPy is installed
 for later analytics; pandas and SciPy will be added when needed.
 
@@ -37,8 +39,14 @@ npm run dev
 ```
 
 Open <http://localhost:3000>. Backend health is at
-<http://127.0.0.1:8000/health>. The placeholder frontend runs independently of the backend.
-No environment variables or market-data account are needed yet.
+<http://127.0.0.1:8000/health>. Overview shows **Backend connected** when Next.js receives
+HTTP 200 with `{"status":"ok"}`. Connection errors, unexpected responses, or a three-second
+timeout show **Backend unavailable**. The four sections remain accessible.
+
+Next.js fetches the health endpoint on its server; no browser CORS configuration is
+needed. The default backend address is `http://127.0.0.1:8000`. Optionally copy
+`.env.example` to `frontend/.env.local` and set `API_BASE_URL` to change it.
+This is application liveness only, not market-feed health. No market-data account is needed.
 
 ## Check the scaffold
 
@@ -53,7 +61,22 @@ npm run build
 npm run typecheck
 ```
 
-These checks verify application scaffolding, not quantitative features.
+These checks verify application scaffolding, not production quantitative features.
+
+## Run the Day 1 learning notebook
+
+From the repository root:
+
+```sh
+.venv/bin/python -m pip install -r research/requirements.txt
+.venv/bin/python research/run_notebook.py
+```
+
+The runner validates the notebook and executes all code cells in a fresh Python
+kernel, including the assertions. It leaves source outputs empty for clean diffs.
+For interactive experiments, open `research/notebooks/01_option_basics.ipynb` in
+your notebook editor and select this project's `.venv` Python interpreter.
+Notebook dependencies are separate from production dependencies.
 
 ## Structure
 
@@ -61,10 +84,10 @@ These checks verify application scaffolding, not quantitative features.
 backend/
   app/
     main.py          FastAPI entry point
-    routes.py        Health endpoint only
-    schemas.py       Placeholder for future contracts
-    analytics/       Empty Python package
-    market_data/     Empty Python package
+    api/             Health route and future schema placeholder
+    pricing/         Empty pricing package
+    volatility/      Empty volatility package
+    market_data/     Empty provider package
   tests/test_api.py  Health smoke test only
   pyproject.toml
   requirements-dev.lock
@@ -72,11 +95,16 @@ frontend/
   src/
     app/             Four placeholder pages and shared layout
     components/      Navigation and placeholder component
-    lib/             Empty; future API access and display types
+    lib/api.ts       Server-side backend health request
   package.json
   package-lock.json
+research/
+  notebooks/01_option_basics.ipynb
+  run_notebook.py
+  requirements.txt
 docs/
   learning-plan.md
+  day-1.md
   assumptions.md
 ```
 
@@ -89,7 +117,7 @@ validation. Then wait for understanding/approval unless that day's task explicit
 asks to build. Never implement later days in advance.
 
 All quant calculations belong in Python. Provider code stays separate from analytics.
-Notebooks, if introduced, are for learning only. The frontend only presents API results.
+Research notebooks are for learning only and are never imported by production code. The frontend only presents API results.
 See [documentation conventions](docs/assumptions.md).
 
 V1 excludes databases, Redis, Docker orchestration, backtesting, ranking, 3D surfaces,

@@ -1,0 +1,4 @@
+# Educational notebook execution only. Production does not depend on these.
+nbformat>=5.10,<6
+nbclient>=0.10,<1
+ipykernel>=6.29,<8

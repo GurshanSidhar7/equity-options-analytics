@@ -1,4 +1,4 @@
-"""Application wiring only. Feature endpoints will be added during learning days."""
+"""HTTP routes only. Day 1 exposes application liveness, not market-feed health."""
 
 from fastapi import APIRouter
 

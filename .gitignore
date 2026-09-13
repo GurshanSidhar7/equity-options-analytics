@@ -10,3 +10,5 @@ node_modules/
 .DS_Store
 test-results/
 playwright-report/
+.ipynb_checkpoints/
+research/notebooks/*_executed.ipynb

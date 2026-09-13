@@ -1,6 +1,6 @@
 # Documentation conventions for future features
 
-No model, estimator, or data convention has been implemented yet. Choose and document
+No production model, estimator, or market-data convention has been implemented yet. Choose and document
 these during the corresponding learning day rather than treating them as settled now.
 
 For each feature, record:
@@ -23,3 +23,12 @@ Decisions to discuss later include the price-adjustment basis, return convention
 sampling frequency, volatility estimator and annualization, option day count,
 Greek scaling, exercise-style limitations, quote timestamps, ATM selection, and
 IV convergence/failure handling. None is implemented by this scaffold.
+
+## Day 1 notebook only
+
+The notebook uses hypothetical USD-per-share premiums, holds isolated call/put
+positions until expiry, and ignores fees, financing, taxes, dividends, and early
+exercise. A 100-share multiplier is an explicit example assumption. Payoff excludes
+the premium; long profit subtracts it, short profit receives it and owes the long
+payoff. These are educational expiry outcomes, not pre-expiry model prices or
+market observations. Production code does not import the notebook.

@@ -1,7 +1,9 @@
 # Project working agreement
 
 This is a learning-first Equity Options Analytics Dashboard. The user wants
-scaffolding now, with implementation structured into learning days.
+implementation structured into learning days. Day 1 authorizes the application
+skeleton, frontend/backend health connection, and educational option-basics notebook
+only. Production pricing and volatility packages remain unimplemented.
 
 - Follow docs/learning-plan.md, one user-selected day at a time.
 - Do not interpret scaffolding, planning, or explanation requests as authorization

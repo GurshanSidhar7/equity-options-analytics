@@ -1,6 +1,6 @@
 # Day-by-day learning plan
 
-**Current stage: scaffold only. All feature work below is pending.**
+**Current stage: Day 1 skeleton and educational notebook. Day 2 onward is pending.**
 
 Each day is a learning unit; take more than one calendar day if needed. Do not move
 on automatically or write later-day implementations in advance.
@@ -21,11 +21,16 @@ and connect the API/UI where applicable. Finish with files changed, tests run,
 limitations, and five comprehension questions. A request to explain, plan, or scaffold
 is not permission to implement calculations.
 
-## Day 1 — Understand the scaffold and project boundaries
+## Day 1 — Options fundamentals and application skeleton
 
-Walk through Python versus TypeScript responsibilities, the four sections, data flow,
-and how to start both applications. Understand `/health` and run the scaffold checks.
-**No finance calculations.**
+Learn calls, puts, long/short, strike, expiry, premium, payoff versus profit,
+intrinsic/time value, and moneyness. Work through one call and put example.
+
+Preserve the four frontend sections and backend wiring. Keep API, pricing,
+volatility, market-data, and test packages separate. Connect Overview to `/health`.
+Run `research/notebooks/01_option_basics.ipynb` for educational payoff/profit experiments.
+**No production finance calculations.** See [Day 1 notes](day-1.md) for commands,
+assumptions, and the five questions to answer before Day 2.
 
 ## Day 2 — Historical prices and log returns
 
