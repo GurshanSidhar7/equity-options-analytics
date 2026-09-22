@@ -1,6 +1,7 @@
-import { SectionPlaceholder } from "@/components/section-placeholder";
-export default function PricingLab() {
-  return <SectionPlaceholder title="Pricing Lab"
-    description="Learn dividend-adjusted European Black–Scholes pricing and Delta, Gamma, Vega, and Theta."
-    limitation="The pricing model is not implemented yet. It will use a continuous dividend yield, decimal rates and volatility, and time in years. European pricing does not capture early exercise in American-style contracts. Market quotes and theoretical prices will have distinct labels." />;
+import { redirect } from "next/navigation";
+
+// Preserve existing bookmarks while keeping the workspace on one page.
+export default async function PricingLab({ searchParams }: { searchParams: Promise<{ ticker?: string }> }) {
+  const { ticker } = await searchParams;
+  redirect(`/${ticker ? `?ticker=${encodeURIComponent(ticker)}` : ""}#pricing-lab`);
 }

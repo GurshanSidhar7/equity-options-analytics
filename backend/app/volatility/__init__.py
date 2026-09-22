@@ -1,1 +1,1 @@
-"""Reserved for volatility lessons. No volatility implementation exists yet."""
+"""Historical returns and realized volatility only; no implied volatility."""

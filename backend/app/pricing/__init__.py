@@ -1,1 +1,1 @@
-"""Reserved for pricing lessons. No pricing implementation exists yet."""
+"""Pure option-pricing analytics; no market-data access."""

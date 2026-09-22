@@ -1,7 +1,7 @@
-import { SectionPlaceholder } from "@/components/section-placeholder";
+import { redirect } from "next/navigation";
 
-export default function Volatility() {
-  return <SectionPlaceholder title="Volatility"
-    description="A future home for implied volatility, ATM IV, and IV versus strike."
-    limitation="Scaffolding only. Implied-volatility estimation and market-data integration will be taught and implemented on their scheduled learning days." />;
+// Preserve existing bookmarks while keeping the workspace on one page.
+export default async function Volatility({ searchParams }: { searchParams: Promise<{ ticker?: string }> }) {
+  const { ticker } = await searchParams;
+  redirect(`/${ticker ? `?ticker=${encodeURIComponent(ticker)}` : ""}#volatility`);
 }
