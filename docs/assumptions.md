@@ -2,7 +2,8 @@
 
 Day 2 implements the historical-data and realized-volatility conventions in
 [Day 2 notes](day-2.md). Day 3 implements pricing conventions in
-[Day 3 notes](day-3.md). Greek and IV conventions remain future decisions.
+[Day 3 notes](day-3.md). Day 4 implements Greek conventions in
+[Day 4 notes](day-4.md). IV conventions remain future decisions.
 
 For each feature, record:
 
@@ -20,9 +21,8 @@ Project rules:
   or arbitrage.
 - Quant calculations live only in Python. Data providers remain separate.
 
-Remaining decisions include Greek scaling, exercise-style
-limitations, option-quote timestamps, ATM selection, and IV convergence/failure
-handling. No Greeks or IV calculations are implemented.
+Remaining decisions include option-quote timestamps, ATM selection, and IV
+convergence/failure handling. No IV calculations are implemented.
 
 ## Day 1 notebook only
 

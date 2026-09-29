@@ -1,6 +1,6 @@
 # Day-by-day learning plan
 
-**Current stage: Day 3 dividend-adjusted European Black–Scholes pricing. Later sprints remain pending.**
+**Current stage: Day 4 Greeks. Later sprints remain pending.**
 
 Each day is a learning unit; take more than one calendar day if needed. Do not move
 on automatically or write later-day implementations in advance.
@@ -50,7 +50,7 @@ After confirmation, implement pricing and validation and connect Pricing Lab.
 
 Explain Delta, Gamma, Vega, and Theta separately using the six-part learning format.
 Agree on units and scaling before implementing each. Validate sensitivities and display
-them in Pricing Lab. Rho remains optional.
+them in Pricing Lab. Rho remains optional. See [Day 4 notes](day-4.md).
 
 ## Day 5 — Real option-chain data and quote quality
 

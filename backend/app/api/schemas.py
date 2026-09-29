@@ -44,11 +44,26 @@ class PricingRequest(BaseModel):
     option_type: Literal["call", "put"]
 
 
+class GreeksResponse(BaseModel):
+    delta: float | None
+    gamma: float | None
+    vega_per_vol_point: float | None
+    theta_per_day: float | None
+
+
+class GreekCurvePoint(GreeksResponse):
+    spot: float
+
+
 class PricingResponse(BaseModel):
     option_type: Literal["call", "put"]
+    spot: float
     model_price: float
     intrinsic_value: float
     time_value: float
     time_to_expiry_years: float
+    greeks: GreeksResponse
+    greek_curve: list[GreekCurvePoint]
+    greek_units: str = "Delta: model-price change per 1 spot currency unit; Gamma: Delta change per 1 spot currency unit; Vega: price change per 1 volatility percentage point (0.01 decimal); Theta: price change per calendar day elapsed (ACT/365). All are per share."
     units: str = "Price values in currency units per share; rates and volatility are decimal annual values; time is in years"
     model: str = "Dividend-adjusted European Black-Scholes"

@@ -2,11 +2,13 @@
 
 from typing import Annotated
 
+import numpy as np
 from fastapi import APIRouter, Depends, HTTPException, Query
 
-from app.api.schemas import OverviewResponse, PricingRequest, PricingResponse
+from app.api.schemas import GreekCurvePoint, GreeksResponse, OverviewResponse, PricingRequest, PricingResponse
 from app.market_data.history import MarketDataError, YahooHistoryProvider
 from app.pricing.black_scholes import black_scholes
+from app.pricing.greeks import greeks
 from app.volatility.overview import build_overview
 
 router = APIRouter()
@@ -48,10 +50,33 @@ def pricing(request: PricingRequest) -> PricingResponse:
         dividend_yield=request.dividend_yield,
         option_type=request.option_type,
     )
+    inputs = dict(
+        strike=request.strike,
+        time_to_expiry=time_to_expiry_years,
+        volatility=request.volatility,
+        risk_free_rate=request.risk_free_rate,
+        dividend_yield=request.dividend_yield,
+        option_type=request.option_type,
+    )
+    sensitivities = greeks(spot=request.spot, **inputs)
+    curve: list[GreekCurvePoint] = []
+    if sensitivities.delta is not None:
+        spots = np.linspace(min(request.spot * 0.7, request.strike * 0.8), max(request.spot * 1.3, request.strike * 1.2), 61)
+        sampled = greeks(spot=spots, **inputs)
+        curve = [GreekCurvePoint(
+            spot=float(spot),
+            delta=float(sampled.delta[index]),
+            gamma=float(sampled.gamma[index]),
+            vega_per_vol_point=float(sampled.vega_per_vol_point[index]),
+            theta_per_day=float(sampled.theta_per_day[index]),
+        ) for index, spot in enumerate(spots)]
     return PricingResponse(
         option_type=request.option_type,
+        spot=request.spot,
         model_price=float(result.model_price),
         intrinsic_value=float(result.intrinsic_value),
         time_value=float(result.time_value),
         time_to_expiry_years=time_to_expiry_years,
+        greeks=GreeksResponse(**vars(sensitivities)),
+        greek_curve=curve,
     )

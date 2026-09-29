@@ -3,8 +3,9 @@
 This is a learning-first Equity Options Analytics Dashboard. The user wants
 implementation structured into learning days. Day 1 covered the application skeleton
 and option-basics notebook. Day 2 covered historical data, returns, realized volatility,
-and the Overview. Day 3 covers dividend-adjusted European Black–Scholes pricing and
-the Pricing Lab. Greeks and implied volatility remain unimplemented.
+and the Overview. Day 3 covered dividend-adjusted European Black–Scholes pricing and
+the Pricing Lab. Day 4 covers Delta, Gamma, Vega, Theta, and a selected
+Greek-versus-spot chart. Implied volatility remains unimplemented.
 
 - Follow docs/learning-plan.md, one user-selected day at a time.
 - Do not interpret scaffolding, planning, or explanation requests as authorization
