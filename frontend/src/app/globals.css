@@ -147,3 +147,109 @@ h1 span { background: linear-gradient(110deg,#6af2d2 5%,#8bc5fb 65%,#b69bff); -w
 .output-breakdown { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #2a354a; border-bottom: 1px solid #2a354a; }.output-breakdown div { padding: 15px 0; }.output-breakdown div+div { padding-left: 18px; border-left: 1px solid #2a354a; }.output-breakdown span { display: block; color: #8395b0; font-size: 9px; }.output-breakdown strong { display: block; color: #dae5f4; font-size: 18px; margin-top: 7px; font-variant-numeric: tabular-nums; }.output-meta { color: #7f91ad; font-size: 8px; margin-top: 11px; line-height: 1.5; }.output-note { margin-top: auto; padding-top: 18px; color: #9aabc2; font-size: 9px; line-height: 1.65; }.output-note strong { color: #c7d3e6; }.output-note p { margin-top: 4px; }.pricing-error { margin: 24px 0; border: 1px solid #654f38; background: #251e1b; color: #f2d5b1; border-radius: 8px; padding: 14px; font-size: 10px; line-height: 1.6; }
 @media(max-width:1050px) { .pricing-workspace { grid-template-columns: 1fr; }.pricing-form { border-right: 0; border-bottom: 1px solid #2a354a; }.pricing-fields { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media(max-width:640px) { .pricing-heading { padding: 21px 18px; flex-direction: column; }.pricing-heading h2 { font-size: 22px; }.pricing-form,.pricing-output { padding: 21px 18px; }.pricing-fields { grid-template-columns: 1fr 1fr; gap: 16px 9px; }.option-toggle label { flex: 1; }.option-toggle span { min-width: 0; }.price-button { width: 100%; justify-content: space-between; }.primary-output strong { font-size: 43px; }.model-badge { align-self: flex-start; } }
+
+/* Day 4 local sensitivities */
+.greeks-output { margin-top: 21px; border-top: 1px solid #2a354a; padding-top: 17px; }
+.greeks-output h3,.greek-curve-heading h3 { color: #e0e9f7; font-size: 12px; font-weight: 600; }
+.greeks-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin: 12px 0; }
+.greek-metric { min-width: 0; padding: 11px; border: 1px solid #344158; border-radius: 8px; background: #0d1624a8; }
+.greek-metric span,.greek-metric small { display: block; color: #9aacc5; font-size: 9px; }
+.greek-metric strong { display: block; margin: 6px 0 4px; color: #d9eff0; font-size: 16px; font-variant-numeric: tabular-nums; }
+.greeks-output p { color: #98a9c1; font-size: 9px; line-height: 1.5; }
+.greek-curve-panel { border-top: 1px solid #2a354a; padding: 20px 27px 12px; }
+.greek-curve-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.greek-curve-heading p { max-width: 570px; color: #9aabc2; font-size: 10px; line-height: 1.6; margin-top: 6px; }
+.greek-curve-heading label { flex-shrink: 0; color: #afbdd1; font-size: 10px; }
+.greek-curve-heading select { margin-left: 8px; padding: 7px 9px; border: 1px solid #344158; border-radius: 7px; background: #0d1624; color: #eef4ff; }
+.greek-plot { width: 100%; min-width: 0; min-height: 260px; }
+@media(max-width:640px) { .greek-curve-panel { padding: 18px 12px 10px; }.greek-curve-heading { padding: 0 7px; flex-direction: column; gap: 12px; }.greek-curve-heading label { align-self: flex-start; } }
+
+/* Research flow: readable data context, connected navigation, and compact next steps. */
+.main-content { max-width: 1390px; }
+.page-description { font-size: 14px; max-width: 610px; }
+.nav-link { font-size: 13px; }
+.instrument-bar { padding: 18px 20px; border: 1px solid #31445b; border-radius: 14px; background: linear-gradient(110deg,#152b34,#121e30 55%,#151d31); }
+.instrument-eyebrow { margin-bottom: 6px; color: #80dcca; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; }
+.instrument-identity h2 { font-size: 17px; }
+.instrument-subtitle { font-size: 11px; }
+.instrument-actions { display: flex; align-items: center; gap: 22px; }
+.session-meta { font-size: 11px; }
+.instrument-link { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 10px 13px; border: 1px solid #4a756d; border-radius: 8px; color: #a3ffe8; text-decoration: none; font-size: 11px; font-weight: 650; background: #18413885; }
+.instrument-link:hover { border-color: #83ead3; background: #20564a; }
+.metric h3 { font-size: 12px; }
+.metric-detail { font-size: 11px; }
+.data-context { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0; margin: -7px 0 20px; border: 1px solid #2c3b51; border-radius: 10px; background: #101b2b; }
+.data-context>div { min-width: 0; padding: 13px 16px; }
+.data-context>div+div { border-left: 1px solid #2c3b51; }
+.data-context span { display: block; margin-bottom: 5px; color: #90a3bf; font-size: 10px; }
+.data-context strong { display: block; overflow-wrap: anywhere; color: #dae8f5; font-size: 11px; font-weight: 550; line-height: 1.5; }
+.panel-eyebrow { display: block; margin-bottom: 7px; color: #80dcca; font-size: 9px; font-weight: 700; letter-spacing: 1.4px; }
+.panel-header h2 { font-size: 18px; }
+.panel-header p { font-size: 12px; }
+.chart-footer { font-size: 10px; }
+.data-disclosure { font-size: 12px; }
+.data-disclosure>summary { font-size: 12px; }
+.pricing-lab { margin-top: 24px; }
+.pricing-heading h2 { font-size: 27px; }
+.pricing-heading>div>p:last-child { font-size: 12px; }
+.assumption-source { margin-bottom: 21px; padding: 13px 15px; border: 1px solid #37534f; border-radius: 9px; background: #14332d6b; }
+.assumption-source span { display: block; margin-bottom: 7px; color: #80ead0; font-size: 9px; font-weight: 700; letter-spacing: 1.3px; }
+.assumption-source p { color: #bbd0d2; font-size: 11px; line-height: 1.6; }
+.assumption-source strong { color: #e4fff4; font-weight: 650; }
+.pricing-field>span { font-size: 11px; }
+.pricing-field input,.pricing-field select { font-size: 14px; }
+.pricing-field small { font-size: 10px; }
+.output-label { font-size: 10px; }
+.output-empty h3 { font-size: 14px; }.output-empty p { font-size: 11px; }
+.output-breakdown span { font-size: 10px; }
+.output-meta { font-size: 10px; }
+.submitted-inputs { margin-top: 8px; color: #a9bdd4; font-size: 10px; line-height: 1.55; font-variant-numeric: tabular-nums; }
+.pricing-stale { margin-top: 15px; padding: 10px 12px; border: 1px solid #a67844; border-radius: 7px; background: #3a2b1b; color: #ffe1ae; font-size: 11px; line-height: 1.5; }
+.greeks-output h3,.greek-curve-heading h3 { font-size: 14px; }
+.greek-metric span,.greek-metric small,.greeks-output p { font-size: 10px; }
+.output-note { font-size: 11px; }
+.greek-curve-heading p { font-size: 11px; }
+.planned-chain { display: flex; align-items: center; justify-content: space-between; gap: 25px; margin-top: 18px; padding: 20px 23px; }
+.planned-chain .planned-top { margin-bottom: 7px; }
+.planned-chain .planned-label { margin-left: 6px; }
+.planned-chain .planned-scope { flex-shrink: 0; margin: 0; }
+.planned-chain p { max-width: 660px; font-size: 11px; }
+.methodology { margin-top: 25px; }
+.methodology summary,.methodology-top,.methodology-body { font-size: 12px; }
+.source-line,.page-footer { font-size: 10px; }
+@media(max-width:1200px) {
+  .instrument-actions { gap: 12px; }
+  .instrument-link { padding: 9px 10px; }
+  .data-context { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .data-context>div:nth-child(3) { grid-column: 1 / -1; border-left: 0; border-top: 1px solid #2c3b51; }
+  .planned-chain { align-items: flex-start; flex-direction: column; gap: 12px; }
+}
+@media(max-width:950px) {
+  .instrument-bar { align-items: flex-start; flex-direction: column; }
+  .instrument-actions { width: 100%; justify-content: space-between; }
+}
+@media(max-width:640px) {
+  html { scroll-padding-top: 120px; }
+  .sidebar { position: sticky; top: 0; z-index: 20; padding: 12px 14px 10px; box-shadow: 0 8px 24px #0005; }
+  .workspace-nav { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 4px; margin-top: 12px; }
+  .nav-link { justify-content: center; min-height: 38px; padding: 7px 3px; font-size: 10px; text-align: center; white-space: normal; line-height: 1.2; }
+  .main-content { padding: 23px 16px 10px; }
+  .page-description { font-size: 12px; }
+  .instrument-bar { padding: 14px; }
+  .instrument-identity h2 { font-size: 15px; }
+  .instrument-actions { gap: 10px; flex-wrap: wrap; }
+  .session-meta { padding-left: 0; font-size: 10px; }
+  .instrument-link { font-size: 10px; }
+  .metric h3 { font-size: 11px; }
+  .metric-detail { font-size: 10px; }
+  .data-context>div { padding: 11px 12px; }
+  .data-context strong { font-size: 10px; }
+  .panel-header h2 { font-size: 16px; }
+  .panel-header p { font-size: 11px; }
+  .chart-footer { font-size: 9px; }
+  .pricing-heading h2 { font-size: 24px; }
+  .pricing-heading>div>p:last-child { font-size: 11px; }
+  .planned-chain { padding: 17px; }
+  .planned-chain .planned-label { margin-left: 0; }
+  .planned-chain .planned-scope { flex-shrink: 1; }
+}

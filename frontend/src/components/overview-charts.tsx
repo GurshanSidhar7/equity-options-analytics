@@ -62,12 +62,12 @@ export function OverviewCharts({ history, currency }: { history: HistoryPoint[];
   return <>
     <div className="charts-grid">
       <article className="chart-panel">
-        <div className="panel-header"><div><h2>Historical Price</h2><p>Daily closing price · {currency ?? "currency unavailable"} per share</p></div><span className="chart-chip">1D observations</span></div>
+        <div className="panel-header"><div><span className="panel-eyebrow">01 / OVERVIEW</span><h2>Historical Price</h2><p>Daily closing price · {currency ?? "currency unavailable"} per share</p></div><span className="chart-chip">1D observations</span></div>
         <div className="chart-frame"><Chart history={history} kind="price" currency={currency} /></div>
         <div className="chart-footer"><span>Split-adjusted · excludes dividend adjustments</span><span>Drag to zoom</span></div>
       </article>
       <section id="volatility" className="chart-panel" aria-labelledby="volatility-title">
-        <div className="panel-header"><div><h2 id="volatility-title">Realized Volatility</h2><p>Annualized historical risk · 252 trading sessions</p></div><span className="chart-chip">Historical</span></div>
+        <div className="panel-header"><div><span className="panel-eyebrow">02 / VOLATILITY</span><h2 id="volatility-title">Realized Volatility</h2><p>Annualized historical risk · 252 trading sessions</p></div><span className="chart-chip">Historical</span></div>
         <div className="chart-legend"><span><i style={{ background: "#55efd2" }} />HV20</span><span><i style={{ background: "#b69bff" }} />HV30</span></div>
         <div className="chart-frame"><Chart history={history} kind="volatility" currency={currency} /></div>
         <div className="chart-footer"><span>Adjusted log returns · sample standard deviation</span><span>No implied volatility</span></div>

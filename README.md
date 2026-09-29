@@ -3,16 +3,16 @@
 A compact, learning-first project for equity-options fundamentals and capital-markets
 internship recruiting. Features are implemented one user-selected sprint at a time.
 
-**Current status: Day 3 — dividend-adjusted European Black–Scholes Pricing Lab.**
+**Current status: Day 4 — dividend-adjusted European Black–Scholes Greeks.**
 
 - **Overview:** ticker selection, latest completed daily close, daily change, HV20/HV30,
   Historical Price and Realized Volatility charts, explicit data limitations.
 - **Volatility:** the existing HV20/HV30 chart within the same dashboard; no IV yet.
 - **Pricing Lab:** user-supplied call/put assumptions with Python-computed model,
-  intrinsic, and time values.
+  intrinsic, and time values, four Greeks, and a selected Greek-versus-spot chart.
 - **Option Chain:** clearly labeled as planned, without fabricated metrics.
 - Day 1 option-basics notebook remains educational only.
-- No Greeks, implied volatility, smile, database, strategy builder,
+- No implied volatility, smile, database, strategy builder,
   rankings, or backtesting is implemented.
 
 ## Run locally
@@ -37,6 +37,10 @@ Open <http://localhost:3000>. The dark analytics workspace presents all four
 sections on one page; the navigation rail
 jumps between them without losing the selected ticker. Previous section URLs redirect
 to the matching dashboard anchor. Methodology and observations expand in place.
+The working flow runs from Overview to Volatility to Pricing Lab; the planned Option
+Chain sits last. After a successful overview load, Pricing Lab starts with the latest
+completed daily close for spot and the same number as an explicitly illustrative,
+editable strike. The remaining inputs are sample assumptions, not market quotes.
 
 Submit an equity ticker such as AAPL or MSFT using
 **Load overview** or Enter. The backend needs outbound HTTPS access to Yahoo Finance.
@@ -51,6 +55,9 @@ The default API address is `http://127.0.0.1:8000`. Optionally copy `.env.exampl
 - `GET /health`: application liveness only.
 - `GET /api/overview?ticker=AAPL`: real historical prices and Python analytics.
 - `POST /api/pricing`: theoretical dividend-adjusted European Black–Scholes result.
+  Includes per-share Delta, Gamma, Vega per 1 volatility point, Theta per calendar
+  day, and a model Greek-versus-spot curve. Greeks are unavailable at expiry or
+  effectively zero volatility. See [Day 4 notes](docs/day-4.md).
 
 Spot is a **latest completed daily close proxy**, not a live quote. Today's local
 exchange date is excluded conservatively. Daily price change uses provider Close;
@@ -110,4 +117,5 @@ Python owns every quantitative calculation; React formats and displays results.
 The analytics module has no external API calls. We do not add databases, Redis,
 orchestration, portfolios, strategies, ranking, or other future-scope features.
 See [project instructions](AGENTS.md), [learning plan](docs/learning-plan.md),
-[Day 1](docs/day-1.md), [Day 2](docs/day-2.md), and [Day 3](docs/day-3.md).
+[Day 1](docs/day-1.md), [Day 2](docs/day-2.md), [Day 3](docs/day-3.md),
+and [Day 4](docs/day-4.md).

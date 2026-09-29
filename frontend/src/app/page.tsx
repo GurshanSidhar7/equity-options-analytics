@@ -17,7 +17,7 @@ export default async function Overview({ searchParams }: { searchParams: Promise
     <DashboardAnchor ticker={ticker} />
     <div id="overview" className="page-heading">
       <div><p className="eyebrow"><span className="eyebrow-line" /> EQUITY / RESEARCH WORKSPACE</p><h1>Market <span>overview.</span></h1>
-        <p className="page-description">Explore price behaviour. Understand the risk behind the movement.</p></div>
+        <p className="page-description">One place to review the underlying, inspect realized risk, and test model assumptions.</p></div>
       <TickerForm ticker={ticker} />
     </div>
     {result.error && <div role="alert" className="error-panel">
@@ -27,9 +27,10 @@ export default async function Overview({ searchParams }: { searchParams: Promise
     {data && <div key={data.ticker}>
       <div className="instrument-bar">
         <div className="instrument-identity"><span className="ticker-avatar" aria-hidden="true">{data.ticker.charAt(0)}</span>
-          <div><h2>{data.ticker} · Historical overview</h2><p className="instrument-subtitle">{data.currency ?? "Currency unavailable"} / share <span aria-hidden="true"> · </span> {data.history.length} daily observations</p></div>
+          <div><p className="instrument-eyebrow">SELECTED UNDERLYING</p><h2>{data.ticker} · Historical overview</h2><p className="instrument-subtitle">{data.currency ?? "Currency unavailable"} / share <span aria-hidden="true"> · </span> {data.history.length} daily observations</p></div>
         </div>
-        <div className="session-meta"><p>Latest session <strong>{data.as_of}</strong></p><p>Retrieved {new Date(data.timestamp).toLocaleString("en-GB", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })} UTC</p></div>
+        <div className="instrument-actions"><div className="session-meta"><p>Latest session <strong>{data.as_of}</strong></p><p>Retrieved {new Date(data.timestamp).toLocaleString("en-GB", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })} UTC</p></div>
+          <a className="instrument-link" href="#pricing-lab">Open Pricing Lab <span aria-hidden="true">↗</span></a></div>
       </div>
       <div className="metrics-grid">
         <Metric index="01" label="Spot · last daily close" value={price(data.spot)} detail={`${data.currency ?? "Currency unavailable"} per share · historical, not live`} />
@@ -37,17 +38,20 @@ export default async function Overview({ searchParams }: { searchParams: Promise
         <Metric index="03" label="HV20" value={percent(data.hv20)} detail="20-session realized volatility · annualized" accent />
         <Metric index="04" label="HV30" value={percent(data.hv30)} detail="30-session realized volatility · annualized" accent />
       </div>
+      <div className="data-context" aria-label="Research data context">
+        <div><span>Source</span><strong>{data.source}</strong></div>
+        <div><span>Spot basis</span><strong>Latest completed daily close · not live</strong></div>
+        <div><span>Volatility basis</span><strong>Adjusted returns · 252 sessions/year</strong></div>
+      </div>
       <OverviewCharts history={data.history} currency={data.currency} />
     </div>}
-    {!data && <section id="volatility" className="planned-panel" style={{ marginTop: 20 }}><div className="planned-top"><span className="section-number">04</span><h2>Volatility</h2></div><p>Historical volatility is unavailable until a valid price history can be loaded. Implied volatility is not implemented.</p></section>}
-    <div className="planned-grid">
-      <section id="option-chain" className="planned-panel" aria-labelledby="chain-title">
-        <div className="planned-top"><span className="section-number">02</span><h2 id="chain-title">Option Chain</h2><span className="planned-label">Planned · not built</span></div>
-        <p>The next layer of the underlying: option contracts organised by strike and expiry. Option quotes are not connected yet.</p>
-        <div className="planned-scope"><span>Expiry & strike</span><span>Bid / ask</span><span>Quote quality</span></div>
-      </section>
-      <PricingLab />
-    </div>
+    {!data && <section id="volatility" className="planned-panel" style={{ marginTop: 20 }}><div className="planned-top"><span className="section-number">02</span><h2>Volatility</h2></div><p>Historical volatility is unavailable until a valid price history can be loaded. Implied volatility is not implemented.</p></section>}
+    <PricingLab key={`pricing-${ticker}-${data?.as_of ?? "manual"}-${data?.spot ?? "missing"}`} reference={data?.spot != null ? { ticker: data.ticker, spot: data.spot, currency: data.currency, asOf: data.as_of } : null} />
+    <section id="option-chain" className="planned-panel planned-chain" aria-labelledby="chain-title">
+      <div><div className="planned-top"><span className="section-number">04</span><h2 id="chain-title">Option Chain</h2><span className="planned-label">Planned · not built</span></div>
+        <p>Real contract quotes are not connected yet. This section will show expiry, strike, bid/ask, and quote quality when that data is available.</p></div>
+      <div className="planned-scope"><span>Expiry & strike</span><span>Bid / ask</span><span>Quote quality</span></div>
+    </section>
     <div className="methodology">
       <div className="methodology-top"><details>
         <summary>Methodology & data limitations</summary>
@@ -56,10 +60,10 @@ export default async function Overview({ searchParams }: { searchParams: Promise
             <p>HV20 needs 21 valid closes; HV30 needs 31. Annualization uses 252 sessions. Unavailable values are never interpreted as zero. Realized volatility is historical; implied volatility is not implemented.</p>
             <ul>{data.warnings.map(warning => <li key={warning}>{warning}</li>)}</ul></>
             : <p>Historical analytics require valid price data. The Pricing Lab remains available because it uses user-supplied model assumptions.</p>}
-          <p>Pricing Lab uses dividend-adjusted European Black–Scholes with ACT/365 for day inputs. Its output is theoretical and is not an observed market price. Greeks and implied volatility are not implemented.</p>
+          <p>Pricing Lab uses dividend-adjusted European Black–Scholes with ACT/365 for day inputs. Its output and Greeks are theoretical and are not observed market prices or sensitivities. Delta and Gamma use a one-unit spot move; Vega uses one volatility percentage point; Theta uses one calendar day. Greeks are local sensitivities and unavailable at expiry or effectively zero volatility. Implied volatility is not implemented.</p>
         </div>
       </details><span role="status" className={`connection ${health === "connected" ? "" : "offline"}`}><span className="status-dot" />{health === "connected" ? "Backend connected" : "Backend unavailable"}</span></div>
-      {data && <p className="source-line">SOURCE: {data.source} · End-of-day observations, not live quotes · Adjusted closes for HV · No missing-price interpolation</p>}
+      {data && <p className="source-line">End-of-day observations, not live quotes · Adjusted closes for HV · No missing-price interpolation</p>}
     </div>
   </>;
 }

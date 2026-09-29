@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 const sections = [
   { id: "overview", label: "Overview", icon: "grid", number: "01" },
-  { id: "option-chain", label: "Option Chain", icon: "rows", number: "02" },
+  { id: "volatility", label: "Volatility", icon: "wave", number: "02" },
   { id: "pricing-lab", label: "Pricing Lab", icon: "sliders", number: "03" },
-  { id: "volatility", label: "Volatility", icon: "wave", number: "04" },
+  { id: "option-chain", label: "Option Chain", icon: "rows", number: "04" },
 ];
 
 function NavIcon({ name }: { name: string }) {

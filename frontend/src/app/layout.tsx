@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Equity Options | Analytics Workspace",
-  description: "A focused research workspace for historical equity prices and realized volatility.",
+  description: "A research workspace for historical equity prices, realized volatility, European option model values, and Greeks.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <div className="sidebar-footer"><span className="version-square">V1</span><div>Research edition<span>Learning, built into the process.</span></div></div>
     </aside>
     <div className="workspace-body">
-      <header className="topbar"><div className="breadcrumb">Workspace <span>/</span> <strong>Equity analytics</strong></div><span className="topbar-tag"><span className="status-dot" /> Historical data</span></header>
+      <header className="topbar"><div className="breadcrumb">Workspace <span>/</span> <strong>Equity analytics</strong></div><span className="topbar-tag"><span className="status-dot" /> Historical + model</span></header>
       <main tabIndex={-1} id="main-content" className="main-content">{children}</main>
       <footer className="page-footer"><span>Equity Options Analytics</span><span>Historical observations. Explicit assumptions.</span></footer>
     </div>

@@ -11,6 +11,11 @@ test("ticker selection replaces metrics and renders both charts", async ({ page 
   await page.getByRole("button", { name: "Load overview" }).click();
   await expect(page.getByRole("heading", { name: "MSFT · Historical overview" })).toBeVisible();
   await expect(page.getByText("278.00", { exact: true }).first()).toBeVisible();
+  await expect(page.getByLabel("Research data context")).toContainText("Latest completed daily close · not live");
+  await page.getByRole("link", { name: "Open Pricing Lab" }).click();
+  await expect(page.locator("#pricing-lab").getByRole("spinbutton", { name: "Spot (S)" })).toHaveValue("278");
+  await expect(page.locator("#pricing-lab").getByRole("spinbutton", { name: "Strike (K)" })).toHaveValue("278");
+  await expect(page.locator("#pricing-lab")).toContainText("Strike starts at the same number for illustration");
   await expect(page.getByRole("heading", { name: "AAPL · Historical overview" })).toHaveCount(0);
   await expect(page.locator(".js-plotly-plot .scatterlayer .trace")).toHaveCount(3);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
@@ -41,16 +46,44 @@ test("all four sections share one page and preserve the selected ticker", async 
   await expect(page.getByText(/HV20 needs 21 valid closes/)).toBeVisible();
 });
 
-test("Pricing Lab calculates call and put values through the Python API", async ({ page }) => {
+test("Pricing Lab calculates call and put values through the Python API", async ({ page }, testInfo) => {
   await page.goto("/#pricing-lab");
   const lab = page.locator("#pricing-lab");
+  await lab.getByRole("spinbutton", { name: "Spot (S)" }).fill("100");
+  await lab.getByRole("spinbutton", { name: "Strike (K)" }).fill("100");
   await lab.getByRole("button", { name: "Calculate model value" }).click();
   await expect(lab.getByText("CALL MODEL VALUE")).toBeVisible();
   await expect(lab.getByText("2.4056", { exact: true }).first()).toBeVisible();
+  await expect(lab).toContainText("Calculated from: call · S 100 · K 100");
+  await lab.getByRole("spinbutton", { name: "Spot (S)" }).fill("101");
+  await expect(lab.getByRole("status", { name: "" })).toContainText("Inputs changed. Calculate again");
+  await lab.getByRole("spinbutton", { name: "Spot (S)" }).fill("100");
+  await expect(lab.getByText("Inputs changed. Calculate again", { exact: false })).toHaveCount(0);
+  await expect(lab.getByLabel("Model Greeks")).toContainText("Delta");
+  const callDelta = await lab.getByLabel("Model Greeks").locator(".greek-metric").first().locator("strong").innerText();
+  await expect(lab.getByRole("img", { name: "Delta versus spot for the submitted option assumptions" })).toBeVisible();
+  await lab.getByRole("combobox", { name: "Show Greek" }).selectOption("vega_per_vol_point");
+  await expect(lab.getByRole("img", { name: "Vega versus spot for the submitted option assumptions" })).toBeVisible();
   await lab.getByText("Put", { exact: true }).click();
   await lab.getByRole("button", { name: "Calculate model value" }).click();
   await expect(lab.getByText("PUT MODEL VALUE")).toBeVisible();
   await expect(lab.getByText("2.1598", { exact: true }).first()).toBeVisible();
+  const putDelta = await lab.getByLabel("Model Greeks").locator(".greek-metric").first().locator("strong").innerText();
+  expect(Number(callDelta)).toBeGreaterThan(0);
+  expect(Number(putDelta)).toBeLessThan(0);
+  await lab.getByRole("spinbutton", { name: "Spot (S)" }).fill("105");
+  await expect(lab).toContainText("PREVIOUS MODEL OUTPUT");
+  await lab.getByRole("button", { name: "Calculate model value" }).click();
+  await expect.poll(async () => Number(await lab.getByLabel("Model Greeks").locator(".greek-metric").first().locator("strong").innerText())).toBeGreaterThan(Number(putDelta));
+  await expect(lab).toContainText("Calculated from: put · S 105 · K 100");
+  await expect(lab.getByText("PREVIOUS MODEL OUTPUT")).toHaveCount(0);
+  await lab.screenshot({ path: testInfo.outputPath("pricing-lab-desktop.png") });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expect(lab.getByRole("img", { name: "Vega versus spot for the submitted option assumptions" })).toBeVisible();
+  await lab.scrollIntoViewIfNeeded();
+  await expect(page.getByRole("navigation", { name: "Main navigation" })).toBeInViewport();
+  await lab.screenshot({ path: testInfo.outputPath("pricing-lab-mobile.png") });
   await expect(lab).toContainText("Theoretical value, not a market price.");
 });
 
