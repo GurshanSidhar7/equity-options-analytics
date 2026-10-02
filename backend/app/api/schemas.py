@@ -4,6 +4,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from app.explainability.models import OverviewExplanation, PricingExplanation
+
 
 class HistoryPoint(BaseModel):
     date: date
@@ -31,6 +33,7 @@ class OverviewResponse(BaseModel):
     units: str = "Prices/change in provider currency per share; returns and annualized volatility in decimals"
     history: list[HistoryPoint]
     warnings: list[str]
+    desk_translator: OverviewExplanation | None = None
 
 
 class PricingRequest(BaseModel):
@@ -64,6 +67,7 @@ class PricingResponse(BaseModel):
     time_to_expiry_years: float
     greeks: GreeksResponse
     greek_curve: list[GreekCurvePoint]
+    desk_translator: PricingExplanation
     greek_units: str = "Delta: model-price change per 1 spot currency unit; Gamma: Delta change per 1 spot currency unit; Vega: price change per 1 volatility percentage point (0.01 decimal); Theta: price change per calendar day elapsed (ACT/365). All are per share."
     units: str = "Price values in currency units per share; rates and volatility are decimal annual values; time is in years"
     model: str = "Dividend-adjusted European Black-Scholes"

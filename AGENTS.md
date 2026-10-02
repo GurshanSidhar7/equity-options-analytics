@@ -24,3 +24,21 @@ Greek-versus-spot chart. Implied volatility remains unimplemented.
   model-price difference.
 - Do not add databases, Redis, orchestration, backtesting, ranking, 3D surfaces,
   strategies, portfolio Greeks, or P&L attribution.
+
+## Explicitly approved bounded sprint: Day 4.5
+
+The user approved **Day 4.5 — Market Explainability & Ticker Intelligence** outside
+of the original day sequence. This authorizes deterministic Desk Translator
+explanations in Overview/Pricing Lab, recent ticker-news retrieval in Overview,
+and conservative deterministic explanations of provider topic categories.
+Python owns scenarios and model repricing; news remains separate from analytics.
+No LLM, fabricated news, causal price claims, or fifth navigation section.
+
+This does not authorize Day 5 real option chains, Day 6 implied volatility,
+Day 7 smile, trading strategies, portfolio analytics, or backtesting.
+
+The user subsequently approved a full UI refresh using the Cedar identity and Style B
+references, and replacement of the news provider. Use a warm, light editorial design
+with Instrument Serif/Inter and restrained natural accents. Current news uses Yahoo
+Finance with exact ticker metadata, direct headline matching, selected publications,
+and a seven-day age cutoff. This does not expand quantitative scope or navigation.

@@ -1,32 +1,9 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
+import { DeskTranslator } from "@/components/desk-translator";
+import type { PricingResult } from "@/lib/types";
 import { GreekCurve } from "@/components/greek-curve";
-
-export interface GreekValues {
-  delta: number | null;
-  gamma: number | null;
-  vega_per_vol_point: number | null;
-  theta_per_day: number | null;
-}
-
-export interface GreekCurvePoint extends GreekValues {
-  spot: number;
-}
-
-interface PricingResult {
-  option_type: "call" | "put";
-  spot: number;
-  model_price: number;
-  intrinsic_value: number;
-  time_value: number;
-  time_to_expiry_years: number;
-  units: string;
-  model: string;
-  greeks: GreekValues;
-  greek_curve: GreekCurvePoint[];
-  greek_units: string;
-}
 
 const money = (value: number) => new Intl.NumberFormat("en", {
   minimumFractionDigits: 2,
@@ -135,7 +112,7 @@ export function PricingLab({ reference }: { reference: SpotReference | null }) {
       </form>
       <div className="pricing-output" aria-live="polite">
         <p className="output-label">{inputsChanged ? "PREVIOUS MODEL OUTPUT" : "MODEL OUTPUT"}</p>
-        {result && inputsChanged && <p className="pricing-stale" role="status">Inputs changed. Calculate again to update the model value, Greeks, and chart.</p>}
+        {result && inputsChanged && <p className="pricing-stale" role="status">Inputs changed. Calculate again to update the model value, Greeks, chart, and explanations.</p>}
         {error && <div role="alert" className="pricing-error">{error}</div>}
         {!result && !error && <div className="output-empty"><span>ƒ</span><h3>Set assumptions and calculate</h3><p>The result will come from the Python pricing engine.</p></div>}
         {result && <>
@@ -161,6 +138,7 @@ export function PricingLab({ reference }: { reference: SpotReference | null }) {
         <div className="output-note"><strong>Theoretical value, not a market price.</strong><p>Constant volatility, rates, and dividend yield; European exercise only. Time value is model value minus spot intrinsic value and can be negative for some dividend-paying European options.</p></div>
       </div>
     </div>
+    {result && <DeskTranslator items={result.desk_translator.items} context="Pricing Lab" />}
     {result && result.greek_curve.length > 0 && <GreekCurve points={result.greek_curve} currentSpot={result.spot} current={result.greeks} />}
   </section>;
 }

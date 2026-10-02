@@ -2,6 +2,8 @@ import { getBackendHealth, getOverview } from "@/lib/api";
 import { TickerForm } from "@/components/ticker-form";
 import { OverviewCharts } from "@/components/overview-charts";
 import { DashboardAnchor } from "@/components/navigation";
+import { DeskTranslator } from "@/components/desk-translator";
+import { TickerIntelligence } from "@/components/ticker-intelligence";
 import { PricingLab } from "@/components/pricing-lab";
 
 export const dynamic = "force-dynamic";
@@ -25,26 +27,29 @@ export default async function Overview({ searchParams }: { searchParams: Promise
       <p>No substitute prices or metrics are displayed. Try another ticker or reload the overview.</p>
     </div>}
     {data && <div key={data.ticker}>
-      <div className="instrument-bar">
-        <div className="instrument-identity"><span className="ticker-avatar" aria-hidden="true">{data.ticker.charAt(0)}</span>
-          <div><p className="instrument-eyebrow">SELECTED UNDERLYING</p><h2>{data.ticker} · Historical overview</h2><p className="instrument-subtitle">{data.currency ?? "Currency unavailable"} / share <span aria-hidden="true"> · </span> {data.history.length} daily observations</p></div>
+      <OverviewCharts history={data.history} currency={data.currency} summary={<>
+        <div className="instrument-bar">
+          <div className="instrument-identity"><span className="ticker-avatar" aria-hidden="true">{data.ticker.charAt(0)}</span>
+            <div><p className="instrument-eyebrow">SELECTED UNDERLYING</p><h2>{data.ticker} · Historical overview</h2><p className="instrument-subtitle">{data.currency ?? "Currency unavailable"} / share <span aria-hidden="true"> · </span> {data.history.length} daily observations</p></div>
+          </div>
+          <div className="instrument-actions"><div className="session-meta"><p>Latest session <strong>{data.as_of}</strong></p><p>Retrieved {new Date(data.timestamp).toLocaleString("en-GB", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })} UTC</p></div>
+            <a className="instrument-link" href="#pricing-lab">Open Pricing Lab <span aria-hidden="true">↗</span></a></div>
         </div>
-        <div className="instrument-actions"><div className="session-meta"><p>Latest session <strong>{data.as_of}</strong></p><p>Retrieved {new Date(data.timestamp).toLocaleString("en-GB", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })} UTC</p></div>
-          <a className="instrument-link" href="#pricing-lab">Open Pricing Lab <span aria-hidden="true">↗</span></a></div>
-      </div>
-      <div className="metrics-grid">
-        <Metric index="01" label="Spot · last daily close" value={price(data.spot)} detail={`${data.currency ?? "Currency unavailable"} per share · historical, not live`} />
-        <Metric index="02" label="Daily change" value={percent(data.daily_change_pct)} detail={`${price(data.daily_change)} ${data.currency ?? "currency unknown"} · previous close comparison`} />
-        <Metric index="03" label="HV20" value={percent(data.hv20)} detail="20-session realized volatility · annualized" accent />
-        <Metric index="04" label="HV30" value={percent(data.hv30)} detail="30-session realized volatility · annualized" accent />
-      </div>
-      <div className="data-context" aria-label="Research data context">
-        <div><span>Source</span><strong>{data.source}</strong></div>
-        <div><span>Spot basis</span><strong>Latest completed daily close · not live</strong></div>
-        <div><span>Volatility basis</span><strong>Adjusted returns · 252 sessions/year</strong></div>
-      </div>
-      <OverviewCharts history={data.history} currency={data.currency} />
+        <div className="metrics-grid">
+          <Metric index="01" label="Spot · last daily close" value={price(data.spot)} detail={`${data.currency ?? "Currency unavailable"} per share · historical, not live`} />
+          <Metric index="02" label="Daily change" value={percent(data.daily_change_pct)} detail={`${price(data.daily_change)} ${data.currency ?? "currency unknown"} · previous close comparison`} />
+          <Metric index="03" label="HV20" value={percent(data.hv20)} detail="20-session realized volatility · annualized" accent />
+          <Metric index="04" label="HV30" value={percent(data.hv30)} detail="30-session realized volatility · annualized" accent />
+        </div>
+        <div className="data-context" aria-label="Research data context">
+          <div><span>Source</span><strong>{data.source}</strong></div>
+          <div><span>Spot basis</span><strong>Latest completed daily close · not live</strong></div>
+          <div><span>Volatility basis</span><strong>Adjusted returns · 252 sessions/year</strong></div>
+        </div>
+      </>} />
     </div>}
+    <TickerIntelligence key={`news-${ticker}-${data?.timestamp ?? "unavailable"}`} ticker={ticker} />
+    {data?.desk_translator && <DeskTranslator key={`explanation-${ticker}`} items={data.desk_translator.items} context="Overview" />}
     {!data && <section id="volatility" className="planned-panel" style={{ marginTop: 20 }}><div className="planned-top"><span className="section-number">02</span><h2>Volatility</h2></div><p>Historical volatility is unavailable until a valid price history can be loaded. Implied volatility is not implemented.</p></section>}
     <PricingLab key={`pricing-${ticker}-${data?.as_of ?? "manual"}-${data?.spot ?? "missing"}`} reference={data?.spot != null ? { ticker: data.ticker, spot: data.spot, currency: data.currency, asOf: data.as_of } : null} />
     <section id="option-chain" className="planned-panel planned-chain" aria-labelledby="chain-title">

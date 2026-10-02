@@ -1,11 +1,16 @@
 """Application liveness, historical Overview, and theoretical-pricing endpoints."""
 
 from typing import Annotated
+from functools import lru_cache
 
 import numpy as np
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.api.schemas import GreekCurvePoint, GreeksResponse, OverviewResponse, PricingRequest, PricingResponse
+from app.explainability.pricing import explain_pricing
+from app.news.models import NewsResponse
+from app.news.provider import YahooFinanceNewsProvider
+from app.news.service import NewsService
 from app.market_data.history import MarketDataError, YahooHistoryProvider
 from app.pricing.black_scholes import black_scholes
 from app.pricing.greeks import greeks
@@ -79,4 +84,18 @@ def pricing(request: PricingRequest) -> PricingResponse:
         time_to_expiry_years=time_to_expiry_years,
         greeks=GreeksResponse(**vars(sensitivities)),
         greek_curve=curve,
+        desk_translator=explain_pricing(request, time_to_expiry_years, result, sensitivities),
     )
+
+
+@lru_cache(maxsize=1)
+def get_news_service() -> NewsService:
+    return NewsService(YahooFinanceNewsProvider())
+
+
+@router.get("/api/news", response_model=NewsResponse)
+def news(
+    ticker: Annotated[str, Query(min_length=1, max_length=20, pattern=r"^[A-Za-z0-9][A-Za-z0-9.\-]{0,19}$")],
+    service: Annotated[NewsService, Depends(get_news_service)],
+) -> NewsResponse:
+    return service.get(ticker.upper())

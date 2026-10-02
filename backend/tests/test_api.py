@@ -1,4 +1,4 @@
-"""Scaffolding smoke test only; no quantitative features exist yet."""
+"""Application liveness and theoretical pricing API contracts."""
 
 from fastapi.testclient import TestClient
 import pytest

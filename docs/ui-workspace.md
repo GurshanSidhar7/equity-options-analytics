@@ -1,31 +1,59 @@
-# Unified analytics workspace
+# Warm editorial analytics workspace
 
-The UI refresh presents the existing analytics as one cohesive page. It does not
-change the financial calculations, provider, or API contract.
+The user approved a full visual refresh using the supplied **Cedar Brand identity**
+document and **Style B Colour Scheme** image. These are visual references, not
+instructions to turn the dashboard into Cedar's organizational-network product.
+The project name and financial-research purpose remain Equity Options Analytics.
 
-- Four navigation targets remain: Overview, Option Chain, Pricing Lab, Volatility.
-- Navigation uses in-page anchors and retains the ticker query parameter.
-- Old section URLs redirect to the corresponding anchor, preserving the ticker.
-- Historical Price and Realized Volatility share a coordinated chart style.
-- The Volatility section presents existing realized volatility only. IV is not built.
-- Option Chain and Pricing Lab are explicit planned sections. They contain no
-  invented quotes, model prices, controls, or quantitative results.
-- Latest session, retrieval time, currency, and historical-price basis stay visible.
-- Source, methodology, and the historical table remain accessible on the same page.
-- Null values still display as Unavailable, and provider errors replace prior metrics.
+## Visual system
 
-The dark graphite workspace uses layered panels, a cyan/violet heading accent,
-prominent tabular figures, and luminous cyan/violet chart lines. Dark mode is the
-default throughout, including form controls, chart tooltips, tables, errors, and
-loading states. Existing data remains unaltered; chart lines are not smoothed. Mobile
-navigation moves above the dashboard, metric cards use two columns, and charts stack.
+- Warm parchment canvas `#F4EFE6`, quiet ivory surfaces `#FBF8F2`, charcoal `#292520`.
+- Instrument Serif for page and section headings; Inter for controls, labels, body,
+  and tabular data. Fonts are self-hosted from Google's font repository, with their
+  SIL Open Font License files in `frontend/public/fonts/`.
+- Sage `#9AA68F` for subtle structure, with darker `#4B5D49` for accessible data lines.
+- Terracotta `#C96F4A` as the reference accent; darker clay `#A64B30` for readable
+  actions and links on the light surface. Ochre chart line `#90661F` distinguishes HV30.
+- Thin warm-grey borders, 5–10px radii, generous whitespace, flat surfaces, and no
+  neon glow, decorative gradients, or heavy shadows.
+- Quiet navigation, clear headline metrics, paper-like charts, publication-style
+  news headlines, and structured explanations. Colour is not a price-direction signal.
 
-Accessibility includes native links, labeled inputs, a keyboard skip link, focus
-indicators, reduced-motion support, a chart-alternative data table, and explicit
-planned/unavailable states. Charts retain provider data and gaps without smoothing.
+The stylesheet defines one coherent light theme rather than appending overrides to
+the old dark palette. Historical chart colours, tick labels, grids, and hover labels
+use the new palette, as does the Greek-versus-spot chart. The user's sticky historical
+table header behavior is preserved. Navigation sits in a sticky horizontal header to give the workspace its full screen
+width, with small responsive outer gutters. The Overview uses one main panel: ticker
+identity, headline metrics, and source context sit above a large Historical Price
+chart. A shorter full-width Realized Volatility chart and supporting reading panels
+follow below. The page heading is compact to keep the data prominent.
 
-Browser checks cover ticker refreshes, both chart renders, desktop-to-mobile resizing,
-missing metrics, provider errors, four in-page anchors, and legacy URL redirection.
+On mobile, navigation stays sticky and charts,
+news, explanations, and pricing stack without horizontal overflow.
 
-The production build and five browser integration checks pass. Real-data AAPL/MSFT
-checks cover ticker updates and charts; desktop and mobile screenshots were inspected.
+## Product behavior
+
+Exactly four primary navigation targets remain: Overview, Volatility, Pricing Lab,
+and Option Chain. Navigation retains the ticker; legacy routes still redirect to
+anchors. Overview contains the existing prices/returns/HV, Ticker Intelligence,
+and Desk Translator. Pricing Lab retains its inputs, backend model outputs, Greeks,
+chart, submitted-result explanations, and stale-input indicator. Option Chain is
+still explicitly planned. IV and future learning days remain unimplemented.
+
+News now uses Yahoo Finance's unofficial ticker search endpoint. Provider ticker
+metadata, issuer-name headline matching, selected publications, and a seven-day
+cutoff jointly determine eligibility. The panel displays a reason for each match.
+Publication selection does not independently verify article claims. News failure
+remains independent of historical analytics and model pricing.
+
+Keyboard controls, visible focus, semantic links, reduced motion, null values,
+missing-data states, source/timestamps, and chart-alternative observations remain.
+Tests use synthetic providers; production never uses test stories or prices.
+
+## Validation
+
+145 backend tests and 15 Chromium browser tests pass, along with production build,
+TypeScript, and diff checks. Live NVDA/AAPL/MSFT provider checks returned direct
+issuer headlines. The live NVDA dashboard was inspected from 320 to 1920 pixels wide, with no
+browser exceptions or horizontal overflow; chart SVG widths matched their containers. Publication claims
+were not independently verified. The local app remains available on port 3000.

@@ -1,6 +1,6 @@
 # Day-by-day learning plan
 
-**Current stage: Day 4 Greeks. Later sprints remain pending.**
+**Current stage: Day 4.5 — Market Explainability & Ticker Intelligence. Days 5–8 remain pending.**
 
 Each day is a learning unit; take more than one calendar day if needed. Do not move
 on automatically or write later-day implementations in advance.
@@ -51,6 +51,17 @@ After confirmation, implement pricing and validation and connect Pricing Lab.
 Explain Delta, Gamma, Vega, and Theta separately using the six-part learning format.
 Agree on units and scaling before implementing each. Validate sensitivities and display
 them in Pricing Lab. Rho remains optional. See [Day 4 notes](day-4.md).
+
+## Day 4.5 — Market Explainability & Ticker Intelligence
+
+The user explicitly authorized this bounded sprint outside the original sequence.
+Learn to communicate quantitative finance clearly, separate calculation from
+interpretation, abstract external API providers, handle financial-data timestamps
+and relevance, and produce deterministic explanations without causal claims.
+Keep news context separate from quantitative model inputs. Embed Desk Translator
+in Overview/Pricing Lab and up to four recent relevant news articles in Overview.
+Exactly four primary sections remain. No future-day implementation is authorized.
+See [Day 4.5 notes](day-4.5-explainability-and-news.md).
 
 ## Day 5 — Real option-chain data and quote quality
 

@@ -19,6 +19,7 @@ test("ticker selection replaces metrics and renders both charts", async ({ page 
   await expect(page.getByRole("heading", { name: "AAPL · Historical overview" })).toHaveCount(0);
   await expect(page.locator(".js-plotly-plot .scatterlayer .trace")).toHaveCount(3);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await page.screenshot({ path: testInfo.outputPath("editorial-overview-desktop.png") });
   await page.screenshot({ path: testInfo.outputPath("desktop-overview.png"), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -27,6 +28,7 @@ test("ticker selection replaces metrics and renders both charts", async ({ page 
     return svg !== null && svg.getBoundingClientRect().width <= plot.clientWidth + 1;
   }))).toBe(true);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await page.screenshot({ path: testInfo.outputPath("editorial-overview-mobile.png") });
   await page.screenshot({ path: testInfo.outputPath("mobile-overview.png"), fullPage: true });
   expect(errors).toEqual([]);
 });

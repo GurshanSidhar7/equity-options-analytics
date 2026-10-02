@@ -2,6 +2,7 @@
 
 import math
 
+from app.explainability.overview import explain_overview
 from app.api.schemas import HistoryPoint, OverviewResponse
 from app.market_data.history import PriceHistory
 from app.volatility.realized_vol import log_returns, realized_volatility
@@ -25,7 +26,7 @@ def build_overview(history: PriceHistory) -> OverviewResponse:
         warnings.append("HV20 unavailable: requires 21 consecutive valid adjusted closes (20 returns).")
     if not math.isfinite(hv30[-1]):
         warnings.append("HV30 unavailable: requires 31 consecutive valid adjusted closes (30 returns).")
-    return OverviewResponse(
+    response = OverviewResponse(
         ticker=history.ticker, currency=history.currency, source=history.source,
         timestamp=history.retrieved_at, as_of=latest.date, spot=latest.close,
         daily_change=change, daily_change_pct=change_pct,
@@ -35,3 +36,5 @@ def build_overview(history: PriceHistory) -> OverviewResponse:
                  for i, row in enumerate(history.prices)],
         warnings=warnings,
     )
+    response.desk_translator = explain_overview(response)
+    return response

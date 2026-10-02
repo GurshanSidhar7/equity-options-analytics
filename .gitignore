@@ -7,8 +7,11 @@ node_modules/
 *.tsbuildinfo
 .env
 .env.local
+.env.*.local
+.vercel/
 .DS_Store
 test-results/
 playwright-report/
 .ipynb_checkpoints/
 research/notebooks/*_executed.ipynb
+.vercel
